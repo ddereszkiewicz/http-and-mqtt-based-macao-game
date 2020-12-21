@@ -9,6 +9,9 @@ class Room {
     this.mqttHandler.connect();
     this.chat = new Chat(this.mqttHandler, id);
   }
+  publishMessage(message) {
+    this.chat.publishMessage(message);
+  }
 }
 
 module.exports = Room;

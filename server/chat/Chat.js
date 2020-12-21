@@ -6,6 +6,10 @@ class Chat {
   }
   publishMessage(message) {
     this.messages += message;
-    this.mqttHandler.publish(`chat/${id}`, `${message.author}:${message.text}`);
+    this.mqttHandler.publish(
+      `chat/${this.id}`,
+      `${message.author}:${message.text}`
+    );
   }
 }
+module.exports = Chat;

@@ -2,6 +2,7 @@ const Game = require("./Game");
 const Room = require("./Room");
 const Player = require("./Player");
 const express = require("express");
+const Message = require("./chat/Message");
 const game = new Game();
 const app = express();
 const port = 5000;
@@ -20,7 +21,6 @@ app.post("/start-game", (req, res) => {
   }
 });
 app.post("/register", (req, res) => {
-  console.log("cos");
   const { name } = req.body;
   const player = new Player(name);
   game.addRegisteredPlayer(player);
@@ -28,8 +28,17 @@ app.post("/register", (req, res) => {
   res.send(player.id);
 });
 
-app.get("/kupa", (req, res) => {
-  res.send("kuap");
+app.post("/chat/:id", (req, res) => {
+  const id = req.params.id;
+  const message = new Message(req.body.author, req.body.text);
+  try {
+    const room = game.findRoomById(id);
+    room.publishMessage(message);
+    res.send(true);
+  } catch (error) {
+    console.log(error);
+    res.send(error.message);
+  }
 });
 
 app.listen(port, () => {

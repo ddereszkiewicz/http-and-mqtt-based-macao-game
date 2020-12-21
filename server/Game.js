@@ -19,6 +19,14 @@ class Game {
       throw Error("Player not found");
     }
   }
+  findRoomById(id) {
+    const room = this.rooms.find(room => room.id === parseInt(id));
+    if (room) {
+      return room;
+    } else {
+      throw Error("room not found");
+    }
+  }
 }
 
 module.exports = Game;
