@@ -9,6 +9,11 @@ class Room {
     this.mqttHandler.connect();
     this.chat = new Chat(this.mqttHandler, id);
   }
+
+  addPlayer(player) {
+    this.players.push(player);
+  }
+
   publishMessage(message) {
     this.chat.publishMessage(message);
   }
