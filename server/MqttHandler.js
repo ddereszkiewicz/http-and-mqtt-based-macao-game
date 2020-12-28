@@ -11,11 +11,10 @@ class MqttHandler {
       this.mqttClient.on("connect", () => {
         console.log("connected to mqtt");
       });
-      this.mqttClient.subscribe(`chat/${this.id}`);
 
-      this.mqttClient.on("message", (topic, message) => {
-        console.log(message.toString());
-      });
+      // this.mqttClient.on("message", (topic, message) => {
+      //   console.log(message.toString());
+      // });
     } catch (error) {
       console.log(error);
     }

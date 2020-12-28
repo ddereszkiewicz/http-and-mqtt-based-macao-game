@@ -31,7 +31,7 @@ app.post("/register", (req, res) => {
   res.send(player.id);
 });
 
-app.post(":id/chat", (req, res) => {
+app.post("/:id/chat", (req, res) => {
   const id = req.params.id;
   const message = new Message(req.body.author, req.body.text);
   try {

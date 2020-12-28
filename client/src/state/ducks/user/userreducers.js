@@ -1,6 +1,6 @@
 import { REGISTER } from "./types";
 const initialState = {
-  name: null,
+  name: "",
   logged: false,
   id: "",
 };

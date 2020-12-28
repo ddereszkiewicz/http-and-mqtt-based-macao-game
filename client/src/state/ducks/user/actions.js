@@ -1,4 +1,3 @@
-import { createAction } from "@reduxjs/toolkit";
 import { REGISTER } from "./types";
 const axios = require("axios");
 
