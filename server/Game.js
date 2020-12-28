@@ -1,31 +1,19 @@
+const Deck = require("./deck/Deck");
+
 class Game {
-  constructor() {
-    this.rooms = [];
-    this.registeredPlayers = [];
-    this.roomNumber = 1;
+  constructor(players, mqttHandler) {
+    this.deck = new Deck();
+    this.players = players;
+    this.mqttHandler = mqttHandler;
   }
-  addRoom(room) {
-    this.rooms.push(room);
-    this.roomNumber += 1;
-  }
-  addRegisteredPlayer(player) {
-    this.registeredPlayers.push(player);
-  }
-  findPlayerById(id) {
-    const player = this.registeredPlayers.find(player => player.id === id);
-    if (player) {
-      return player;
-    } else {
-      throw Error("Player not found");
-    }
-  }
-  findRoomById(id) {
-    const room = this.rooms.find(room => room.id === parseInt(id));
-    if (room) {
-      return room;
-    } else {
-      throw Error("room not found");
-    }
+  start() {
+    this.deck.deal(this.players);
+    this.players.reduce((el, next) => {
+      el.setRight(next);
+      next.setLeft(el);
+    });
+    this.players[0].setLeft(this.players[this.players.length - 1]);
+    this.players[this.players.length - 1].setRight(this.players[0]);
   }
 }
 

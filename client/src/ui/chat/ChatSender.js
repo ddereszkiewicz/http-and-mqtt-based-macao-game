@@ -1,5 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
 import { useFormik } from "formik";
 import { sendMessage } from "../../state/ducks/chat/actions";
 const ChatSender = ({ name, roomId }) => {

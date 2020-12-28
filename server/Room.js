@@ -1,6 +1,7 @@
 const { v4 } = require("uuid");
 const MqttHandler = require("./MqttHandler");
 const Chat = require("./chat/Chat");
+const Game = require("./Game");
 class Room {
   constructor(id, players = []) {
     this.id = id;
@@ -8,8 +9,12 @@ class Room {
     this.mqttHandler = new MqttHandler(id);
     this.mqttHandler.connect();
     this.chat = new Chat(this.mqttHandler, id);
+    this.game;
   }
-
+  startGame() {
+    this.game = new Game(this.players, this.mqttHandler);
+    this.game.start();
+  }
   addPlayer(player) {
     this.players.push(player);
   }

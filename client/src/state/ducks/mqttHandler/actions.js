@@ -1,4 +1,3 @@
-import { ADD_MQTT_CLIENT } from "./types";
 import { addMessage } from "../chat/actions";
 const MQTT = require("async-mqtt");
 
@@ -16,9 +15,7 @@ export const addMqttClient = id => dispatch => {
   client.on("message", (topic, message) => {
     switch (topic) {
       case `chat/${id}`: {
-        const [author, text] = message.toString().split(":");
-
-        dispatch(addMessage({ author, text }));
+        dispatch(addMessage(JSON.parse(message.toString())));
         break;
       }
       default:
