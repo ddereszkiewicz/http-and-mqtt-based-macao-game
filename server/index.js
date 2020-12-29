@@ -10,13 +10,40 @@ const port = 5000;
 app.use(express.json());
 app.use(cors());
 
+app.post("/:idPlayer/take-card", (req, res) => {
+  try {
+    const player = main.findPlayerById(req.params.idPlayer);
+    player.takeCard();
+    console.log(player);
+    res.send(true);
+  } catch (error) {
+    res.send(error.message);
+    console.log(error);
+  }
+});
+
+app.post("/:idPlayer/put-card", (req, res) => {
+  try {
+    const { color, value } = req.body;
+
+    const player = main.findPlayerById(req.params.idPlayer);
+    player.putCard(color, value);
+    res.send(true);
+  } catch (error) {
+    console.log(error);
+    res.send(error.message);
+  }
+});
 app.post("/:idRoom/start-game", (req, res) => {
   try {
     const room = main.findRoomById(req.params.idRoom);
     room.startGame();
-    console.log(room.players);
+    console.log(room.game.deck);
+    console.log(room.game.turn);
+    res.send(true);
   } catch (error) {
     console.log(error);
+    res.send(error.message);
   }
 });
 
@@ -35,7 +62,7 @@ app.post("/create-room", (req, res) => {
 });
 app.post("/register", (req, res) => {
   const { name } = req.body;
-  const player = new Player(name);
+  const player = new Player(name, main.playerId.toString());
   main.addRegisteredPlayer(player);
   console.log(main.registeredPlayers);
   res.send(player.id);

@@ -7,6 +7,29 @@ class Player {
     this.left;
     this.right;
     this.hand = [];
+    this.game;
+  }
+  findCard(color, value) {
+    const result = this.hand.find(
+      card => card.color == color && card.value == value
+    );
+    if (result) {
+      return result;
+    } else {
+      throw new Error("Card not in the deck");
+    }
+  }
+
+  takeCard() {
+    this.game.takeCard(this.id);
+  }
+  putCard(color, value) {
+    const card = this.findCard(color, value);
+
+    this.hand.filter(
+      c => !(c.value == card.value && c.color == this.hand.color)
+    );
+    this.game.putCard(card, this.id);
   }
   setLeft(left) {
     this.left = left;
@@ -20,6 +43,9 @@ class Player {
   }
   addCardToHand(card) {
     this.hand.push(card);
+  }
+  setGame(game) {
+    this.game = game;
   }
 }
 

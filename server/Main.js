@@ -1,8 +1,9 @@
-class Game {
+class Main {
   constructor() {
     this.rooms = [];
     this.registeredPlayers = [];
-    this.roomNumber = 1;
+    this.roomNumber = 0;
+    this.playerId = 0;
   }
   addRoom(room) {
     this.rooms.push(room);
@@ -10,9 +11,10 @@ class Game {
   }
   addRegisteredPlayer(player) {
     this.registeredPlayers.push(player);
+    this.playerId += 1;
   }
   findPlayerById(id) {
-    const player = this.registeredPlayers.find(player => player.id === id);
+    const player = this.registeredPlayers.find(player => player.id == id);
     if (player) {
       return player;
     } else {
@@ -29,4 +31,4 @@ class Game {
   }
 }
 
-module.exports = Game;
+module.exports = Main;

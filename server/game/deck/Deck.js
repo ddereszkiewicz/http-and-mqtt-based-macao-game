@@ -1,8 +1,8 @@
 const Card = require("./Card");
-const getRandomInt = require("../functions");
+const getRandomInt = require("../../functions");
 class Deck {
-  constructor() {
-    this.initialCards = [
+  constructor(stack) {
+    this.cards = [
       new Card("hearts", "2"),
       new Card("hearts", "3"),
       new Card("hearts", "4"),
@@ -56,16 +56,38 @@ class Deck {
       new Card("clubs", "king"),
       new Card("clubs", "ace"),
     ];
-    this.cards = this.initialCards;
+    this.stack = stack;
+  }
+  tass() {
+    const cardsFromStack = this.stack.reTass();
+    this.cards = [...this.cards, ...cardsFromStack];
+  }
+  getRandomCard() {
+    const random = getRandomInt(0, this.cards.length - 1);
+    const card = this.cards[random];
+    this.cards.splice(random, 1);
+    return card;
+  }
+
+  putFirstCard() {
+    const random = this.getRandomCard();
+    this.stack.putOnTop(random);
+  }
+
+  giveCard(player, number) {
+    for (let i = 0; i < number; i++) {
+      const card = this.getRandomCard();
+      player.addCardToHand(card);
+    }
   }
 
   deal(players) {
+    this.putFirstCard();
     players.forEach(player => {
       const newHand = [];
       for (let i = 0; i < 5; i++) {
-        const random = getRandomInt(0, this.cards.length - 1);
-        newHand.push(this.cards[random]);
-        this.cards.splice(random, random);
+        const card = this.getRandomCard();
+        newHand.push(card);
       }
       player.setHand(newHand);
     });
