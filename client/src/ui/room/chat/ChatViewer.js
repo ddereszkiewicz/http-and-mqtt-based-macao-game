@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import Message from "./Message";
 import { v4 as uuid } from "uuid";
-import { last10messagesSelector } from "../../state/ducks/chat/selectors";
+import { last10messagesSelector } from "../../../state/ducks/chat/selectors";
 const ChatViewer = ({ last10messages }) => {
   console.log(last10messages);
   const view = last10messages.map(message => (

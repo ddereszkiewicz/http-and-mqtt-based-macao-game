@@ -7,6 +7,7 @@ class Game {
     this.turn = this.players[0];
     this.stack = new Stack();
     this.deck = new Deck(this.stack);
+    this.running = true;
   }
   nextTurn(direction) {
     direction == "left" ? (this.turn = this.turn.left) : this.turn.right;
@@ -31,6 +32,8 @@ class Game {
         cardOnTop: this.stack.cardOnTop,
         currentColor: this.stack.currentColor,
         currentValue: this.stack.currentValue,
+        running: this.running,
+        turn: this.turn.id,
       };
       console.log(message);
       const toSend = JSON.stringify(message);

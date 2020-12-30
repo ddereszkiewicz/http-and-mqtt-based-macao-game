@@ -1,4 +1,4 @@
-import { JOIN_ROOM } from "./types";
+import { ADD_PLAYER, CREATE_ROOM, JOIN_ROOM } from "./types";
 const axios = require("axios");
 export const joinRoom = (userId, roomId) => async dispatch => {
   try {
@@ -20,7 +20,7 @@ export const createRoom = userId => async dispatch => {
       id: userId,
     });
     dispatch({
-      type: JOIN_ROOM,
+      type: CREATE_ROOM,
       payload: { id: parseInt(response.data.roomId) },
     });
   } catch (error) {
@@ -28,3 +28,8 @@ export const createRoom = userId => async dispatch => {
     alert(error);
   }
 };
+
+export const addPlayer = playerNames => ({
+  type: ADD_PLAYER,
+  payload: playerNames,
+});

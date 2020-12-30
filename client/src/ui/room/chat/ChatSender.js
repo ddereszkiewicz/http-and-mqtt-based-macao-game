@@ -1,6 +1,6 @@
 import React from "react";
 import { useFormik } from "formik";
-import { sendMessage } from "../../state/ducks/chat/actions";
+import { sendMessage } from "../../../state/ducks/chat/actions";
 const ChatSender = ({ name, roomId }) => {
   const formik = useFormik({
     initialValues: {

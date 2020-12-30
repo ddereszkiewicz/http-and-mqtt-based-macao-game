@@ -1,0 +1,22 @@
+.playersHand .card, .stack .card {
+  cursor: pointer;
+}
+
+.stack .card {
+  border: yellow 2px solid;
+  border-radius: 5%;
+  background-color: yellow;
+}
+
+.card {
+  height: 10vw;
+  overflow: hidden;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+}
+
+img {
+  max-height: 100%;
+}
+/*# sourceMappingURL=App.css.map */

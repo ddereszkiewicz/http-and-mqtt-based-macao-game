@@ -1,9 +1,9 @@
 import React from "react";
 import RegistrationForm from "./RegistrationForm";
-import "./App.css";
+import "./css/App.css";
 import { connect } from "react-redux";
 import JoinRoom from "./JoinRoom";
-import Room from "./Room";
+import Room from "./room/Room";
 
 function App({ user, room }) {
   const handleRoutes = () => {
@@ -15,12 +15,7 @@ function App({ user, room }) {
       return <RegistrationForm />;
     }
   };
-  return (
-    <div className="App">
-      {/* {user.logged ? <JoinRoom /> : <RegistrationForm />} */}
-      {handleRoutes()}
-    </div>
-  );
+  return <div className="App">{handleRoutes()}</div>;
 }
 
 const mapStateToProps = state => {
