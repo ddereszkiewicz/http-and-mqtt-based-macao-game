@@ -14,6 +14,7 @@ const RegistrationForm = ({ register }) => {
   return (
     <div className="registrationForm">
       <form onSubmit={formik.handleSubmit}>
+        <label>name: </label>
         <input
           type="text"
           name="name"

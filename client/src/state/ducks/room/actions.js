@@ -6,8 +6,9 @@ export const joinRoom = (userId, roomId) => async dispatch => {
       userId: userId,
       roomId: roomId,
     });
-    response &&
-      dispatch({ type: JOIN_ROOM, payload: { id: parseInt(roomId) } });
+    response.data.status
+      ? dispatch({ type: JOIN_ROOM, payload: { id: parseInt(roomId) } })
+      : alert(response.data.message);
   } catch (error) {
     console.log(error);
     alert(error);

@@ -107,11 +107,11 @@ const allCards = {
   diamonds_king,
   diamonds_ace,
 };
-const Card = ({ card }) => {
+const Card = ({ card, onClick }) => {
   const cardName = `${card.color}_${card.value}`;
   const cardImg = allCards[cardName];
   return (
-    <div className="card">
+    <div className="card" onClick={onClick}>
       <img src={cardImg} alt="cardImg" />
     </div>
   );

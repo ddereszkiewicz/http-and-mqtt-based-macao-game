@@ -63,7 +63,7 @@ class Deck {
     this.cards = [...this.cards, ...cardsFromStack];
   }
   getRandomCard() {
-    const random = getRandomInt(0, this.cards.length - 1);
+    const random = getRandomInt(0, this.cards.length);
     const card = this.cards[random];
     this.cards.splice(random, 1);
     return card;
@@ -75,10 +75,17 @@ class Deck {
   }
 
   giveCard(player, number) {
-    for (let i = 0; i < number; i++) {
-      const card = this.getRandomCard();
-      player.addCardToHand(card);
+    if (this.cards.length >= number) {
+      for (let i = 0; i < number; i++) {
+        const card = this.getRandomCard();
+        player.addCardToHand(card);
+      }
+    } else {
+      throw new Error("Deck is empty");
     }
+  }
+  addCard(card) {
+    this.cards.push(card);
   }
 
   deal(players) {

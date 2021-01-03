@@ -3,10 +3,10 @@ const MqttHandler = require("./MqttHandler");
 const Chat = require("./chat/Chat");
 const Game = require("./game/Game");
 class Room {
-  constructor(id, players = []) {
+  constructor(id, players = [], mqttHandler) {
     this.id = id;
     this.players = players;
-    this.mqttHandler = new MqttHandler(id);
+    this.mqttHandler = mqttHandler;
     this.mqttHandler.connect();
     this.chat = new Chat(this.mqttHandler, id);
     this.game;
@@ -18,7 +18,7 @@ class Room {
   }
   addPlayer(player) {
     if (!this.game) {
-      if (this.players.length <= 4) {
+      if (this.players.length < 4) {
         this.players.push(player);
         this.publishState();
       } else {
@@ -36,7 +36,7 @@ class Room {
           this.players.map(player => ({ name: player.name, id: player.id }))
         )
       );
-    }, 1000);
+    }, 2000);
   }
 
   publishMessage(message) {

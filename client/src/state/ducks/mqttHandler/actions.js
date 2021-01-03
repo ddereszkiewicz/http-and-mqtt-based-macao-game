@@ -17,7 +17,6 @@ export const addMqttClient = (idRoom, idUser) => dispatch => {
   };
   client.on("connect", setUp);
   client.on("message", (topic, message) => {
-    console.log(topic);
     switch (topic) {
       case `chat/${idRoom}`: {
         dispatch(addMessage(JSON.parse(message.toString())));

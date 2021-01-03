@@ -19,6 +19,7 @@ const JoinRoom = ({ user, joinRoom, createRoom }) => {
       </div>
       <div className="JoinRoom">
         <form onSubmit={formik.handleSubmit} className="join_room_form">
+          <label>join room: </label>
           <input
             type="text"
             name="roomId"

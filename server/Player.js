@@ -23,12 +23,12 @@ class Player {
   takeCard() {
     this.game.takeCard(this.id);
   }
+  removeCard(card) {
+    this.hand = this.hand.filter(c => c.id != card.id);
+  }
   putCard(color, value) {
     const card = this.findCard(color, value);
 
-    this.hand.filter(
-      c => !(c.value == card.value && c.color == this.hand.color)
-    );
     this.game.putCard(card, this.id);
   }
   setLeft(left) {

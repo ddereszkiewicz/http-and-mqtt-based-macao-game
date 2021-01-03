@@ -1,22 +1,338 @@
-.playersHand .card, .stack .card {
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background-color: green;
+  color: whitesmoke;
+  width: 100%;
+  overflow: hidden;
+  min-height: 100vh;
+}
+
+.playersHand .card, .stack .card, .deck .card {
+  cursor: pointer;
+  height: 15vh;
+}
+
+.deck .card {
   cursor: pointer;
 }
 
-.stack .card {
-  border: yellow 2px solid;
-  border-radius: 5%;
-  background-color: yellow;
-}
-
 .card {
-  height: 10vw;
-  overflow: hidden;
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
+  overflow: hidden;
+  height: 6vh;
 }
 
 img {
   max-height: 100%;
+}
+
+.registrationForm {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+.App {
+  height: 100%;
+  width: 100%;
+  background-color: green;
+}
+
+.joinRoomForm {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.joinRoomForm .createRoom button {
+  height: 100%;
+  margin-right: 40px;
+}
+
+.roomContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: 100vh;
+}
+
+.roomContainer .roomId {
+  text-align: center;
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+}
+
+.chatContainer {
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  color: black;
+  background-color: whitesmoke;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  border: 2px black solid;
+  border-radius: 5px;
+}
+
+.chatContainer .chatViewer {
+  height: 300px;
+  overflow: scroll;
+  background-color: royalblue;
+  width: 270px;
+}
+
+.chatContainer .chatViewer p {
+  margin-left: 3px;
+  word-break: break-word;
+}
+
+.chatContainer button {
+  width: 70px;
+}
+
+.gameContainer {
+  background-color: blue;
+  -ms-flex-preferred-size: 100%;
+      flex-basis: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.opponentsContainer {
+  font-size: 20px;
+  background-color: red;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+
+.opponentsContainer .opponent {
+  width: 33%;
+}
+
+.opponentsContainer .opponent.active .name {
+  -webkit-animation: pulse 1s linear  infinite alternate;
+          animation: pulse 1s linear  infinite alternate;
+}
+
+.opponentsContainer .opponent .name {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.opponentsContainer .opponent .cards {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  width: 100%;
+}
+
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-transform: scale(100%);
+            transform: scale(100%);
+  }
+  100% {
+    -webkit-transform: scale(170%);
+            transform: scale(170%);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    -webkit-transform: scale(100%);
+            transform: scale(100%);
+  }
+  100% {
+    -webkit-transform: scale(170%);
+            transform: scale(170%);
+  }
+}
+
+.center {
+  height: 15vh;
+  position: relative;
+  background-color: yellow;
+}
+
+.center .stack {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+.center .deck {
+  position: absolute;
+  top: 50%;
+  right: 0%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  margin-right: 40px;
+}
+
+.player {
+  position: relative;
+  left: 350px;
+  background-color: lightgreen;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  width: calc( 100% - 350px);
+}
+
+.player.active .playerName {
+  -webkit-animation: pulse 1s linear  infinite alternate;
+          animation: pulse 1s linear  infinite alternate;
+}
+
+.player .playerName {
+  position: absolute;
+  bottom: 30px;
+  font-size: 32px;
+  left: calc( 35% + 20px);
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+}
+
+.player .playersHand {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  margin: 20px;
+  width: 70%;
+  background-color: blue;
+}
+
+.player .playersHand .card {
+  height: 12vh;
+  margin: 2px;
+}
+
+.waitingScreen {
+  font-size: 24px;
+  color: black;
+  position: absolute;
+  height: 50%;
+  width: 50%;
+  top: 50%;
+  left: 50%;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+.waitingScreen p {
+  height: 40px;
+  line-height: 40px;
+  color: whitesmoke;
+  text-align: center;
+  width: 100%;
+  background-color: green;
+}
+
+.waitingScreen .playerNames {
+  border: 5px black solid;
+  border-radius: 5px;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  background-color: whitesmoke;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.waitingScreen .playerNames .playerName {
+  text-align: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 50%;
+  -webkit-animation: popup 1s;
+          animation: popup 1s;
+}
+
+@-webkit-keyframes popup {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes popup {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 /*# sourceMappingURL=App.css.map */

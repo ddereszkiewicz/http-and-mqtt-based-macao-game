@@ -1,18 +1,217 @@
-
+*
+    margin: 0
+    padding: 0
+    font-family: Arial, Helvetica, sans-serif
     
-.playersHand,.stack
+
+body
+    background-color: green
+    color: whitesmoke
+    width: 100%
+    overflow: hidden
+    min-height: 100vh
+
+.playersHand,.stack,.deck
     .card
         cursor: pointer
+        height: 15vh
 
-.stack
-    .card 
-        border: yellow 2px solid
-        border-radius: 5%
-        background-color: yellow
+    
 
+
+
+        
+.deck
+    .card
+        cursor: pointer
 .card
-    height: 10vw
-    overflow: hidden
     width: fit-content
+    overflow: hidden
+    height: 6vh
 img
-     max-height: 100%
+    max-height: 100%
+.registrationForm
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%,-50%)
+
+
+
+.App
+
+    height: 100%
+    width: 100%
+    background-color: green
+ 
+.joinRoomForm
+
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%,-50%)
+    display: flex
+    width: 100%
+    justify-content: center
+    
+    .createRoom
+        button
+            height:  100%
+            margin-right: 40px
+
+.roomContainer
+    display: flex
+    flex-direction: column
+    height: 100vh
+    .roomId
+        text-align: center
+        width: 100%
+        height: 50px
+        line-height: 50px
+
+.chatContainer
+    
+    position: fixed
+    bottom: 0px
+    left: 0px
+    display: flex 
+    flex-direction: column
+    justify-content: flex-end
+
+    flex-wrap: wrap
+    color: black
+    background-color: whitesmoke
+    width: fit-content
+    border: 2px black solid
+    border-radius: 5px
+    
+    .chatViewer
+        height: 300px
+        overflow: scroll
+        background-color: royalblue        
+        width: 270px
+        p 
+            margin-left: 3px
+            word-break: break-word
+    button
+        width: 70px
+.gameContainer 
+    background-color: blue
+    flex-basis: 100%
+    display: flex
+    flex-direction: column
+    
+.opponentsContainer
+    font-size: 20px
+    background-color: red
+    display: flex
+    justify-content: space-around
+    
+
+    .opponent
+        width: 33%
+        &.active
+            .name
+                animation: pulse 1s linear  infinite alternate
+        .name
+            text-align: center
+            margin-bottom: 15px
+
+        .cards
+            justify-content: center
+            display: flex
+            flex-wrap: wrap
+            width: 100%
+@keyframes pulse
+    0%
+        transform: scale(100%)
+    100%
+        transform: scale(170%)
+.center
+    height: 15vh
+    position: relative
+    background-color: yellow
+    .stack
+        position: absolute
+        top: 50%
+        left: 50%
+        transform: translate(-50%,-50%)
+    .deck
+        position: absolute
+        top: 50%
+        right: 0%
+        transform: translateY(-50%)
+        margin-right: 40px
+.player
+    position: relative
+    left: 350px
+    background-color: lightgreen
+    flex-grow: 1
+    width: calc( 100% - 350px )
+    &.active
+        .playerName
+            animation: pulse 1s linear  infinite alternate
+    .playerName
+ 
+        position: absolute
+        bottom: 30px
+        font-size: 32px
+        left: calc( 35% + 20px  )
+        transform: translateX(-50%)
+
+    .playersHand
+        
+        display: flex
+        flex-wrap: wrap
+        margin: 20px
+        width: 70%
+        background-color: blue
+        .card 
+            height: 12vh
+            margin: 2px
+        
+.waitingScreen
+    font-size: 24px
+    
+    color: black
+    position: absolute
+    height: 50%
+    width: 50%
+    top: 50%
+    left: 50%
+    flex-direction: column
+    display: flex
+
+    transform: translate(-50%,-50%)
+    p
+        height: 40px
+        line-height: 40px
+        color: whitesmoke
+        text-align: center
+        width: 100%
+        background-color: green
+    .playerNames
+        border: 5px black solid
+        border-radius: 5px
+        flex-grow: 1
+        background-color: whitesmoke
+        display: flex
+  
+        flex-wrap: wrap
+        .playerName
+
+            text-align: center
+            display: flex
+            align-items: center
+            justify-content: center
+            width: 50%
+            animation: popup 1s 
+            
+
+@keyframes popup
+    0%
+        opacity: 0
+    100%
+        opacity: 1
+
+            

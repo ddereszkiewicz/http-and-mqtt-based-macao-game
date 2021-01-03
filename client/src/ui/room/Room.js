@@ -19,10 +19,10 @@ const Room = ({ room, user, addMqttClient, game }) => {
   };
   return (
     <div className="roomContainer">
-      <div>room id: {room.id}</div>
+      <div className="roomId">room : {room.id}</div>
       <Chat user={user} room={room} />
-      {!game.running && <WaitingScreen room={room} />}
       {handleRoutes()}
+      {!game.running && <WaitingScreen room={room} />}
     </div>
   );
 };

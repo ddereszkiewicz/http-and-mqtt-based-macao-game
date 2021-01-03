@@ -33,9 +33,9 @@ class Game {
         currentColor: this.stack.currentColor,
         currentValue: this.stack.currentValue,
         running: this.running,
-        turn: this.turn.id,
+        turn: { id: this.turn.id, name: this.turn.name },
       };
-      console.log(message);
+
       const toSend = JSON.stringify(message);
       this.mqttHandler.publish(`game-state/${player.id}`, toSend);
     });
@@ -51,7 +51,10 @@ class Game {
   }
   putCard(card, idPlayer) {
     if (idPlayer == this.turn.id) {
+      this.deck.addCard(this.stack.cardOnTop);
       this.stack.putOnTop(card);
+
+      this.turn.removeCard(card);
       this.nextTurn("left");
       this.sendState();
     } else {

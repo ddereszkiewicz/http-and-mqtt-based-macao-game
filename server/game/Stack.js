@@ -40,12 +40,6 @@ class Stack {
       this.cardOnTop = card;
     }
   }
-  reTass() {
-    const last = this.stack.pop();
-    const rest = this.stack;
-    this.stack = [last];
-    return rest;
-  }
 }
 
 module.exports = Stack;
