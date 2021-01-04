@@ -55,6 +55,9 @@ class Game {
       this.stack.putOnTop(card);
 
       this.turn.removeCard(card);
+      this.card.direction === "right"
+        ? this.nextTurn("right")
+        : this.nextTurn("left");
       this.nextTurn("left");
       this.sendState();
     } else {
