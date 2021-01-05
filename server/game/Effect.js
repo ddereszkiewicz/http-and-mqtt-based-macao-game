@@ -1,6 +1,6 @@
 class Effect {
-  constructor(action, game) {
-    this.action = action;
+  constructor(game) {
+    this.action;
     this.game = game;
   }
   getActionType() {

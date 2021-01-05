@@ -7,7 +7,12 @@ class Stack {
   }
   putOnTop(card) {
     if (this.currentColor && this.currentValue) {
-      if (card.color === this.currentColor || card.value == this.currentValue) {
+      if (
+        card.color === this.currentColor ||
+        card.value == this.currentValue ||
+        card.value == "queen" ||
+        this.currentValue == "queen"
+      ) {
         this.stack.push(card);
         this.currentValue = card.value;
         this.currentColor = card.color;

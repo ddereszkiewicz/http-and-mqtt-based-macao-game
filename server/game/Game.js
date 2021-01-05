@@ -1,5 +1,6 @@
 const Deck = require("./deck/Deck");
 const Stack = require("./Stack");
+const { ActionNone } = require("./Action");
 class Game {
   constructor(players, mqttHandler) {
     this.players = players;
@@ -7,10 +8,20 @@ class Game {
     this.turn = this.players[0];
     this.stack = new Stack();
     this.deck = new Deck(this.stack);
+    this.action = new ActionNone("none");
     this.running = true;
+    this.action.assign(this.deck, this.stack);
   }
   nextTurn(direction) {
-    direction == "left" ? (this.turn = this.turn.left) : this.turn.right;
+    direction == "left"
+      ? (this.turn = this.turn.left)
+      : (this.turn = this.turn.right);
+    if (this.turn.waitingTours > 0) {
+      this.turn.waitingTours -= 1;
+      direction == "left"
+        ? (this.turn = this.turn.left)
+        : (this.turn = this.turn.right);
+    }
   }
   sendState() {
     this.players.forEach(player => {
@@ -28,8 +39,14 @@ class Game {
         }));
       const message = {
         players: playerToSend,
-        hand: player.hand,
-        cardOnTop: this.stack.cardOnTop,
+        hand: player.hand.map(card => ({
+          color: card.color,
+          value: card.value,
+        })),
+        cardOnTop: {
+          color: this.stack.currentColor,
+          value: this.stack.currentValue,
+        },
         currentColor: this.stack.currentColor,
         currentValue: this.stack.currentValue,
         running: this.running,
@@ -42,7 +59,9 @@ class Game {
   }
   takeCard(idPlayer) {
     if (idPlayer == this.turn.id) {
-      this.deck.giveCard(this.turn, 1);
+      this.action.giveCards(this.turn);
+      this.action = new ActionNone("none");
+      this.action.assign(this.deck, this.stack);
       this.nextTurn("left");
       this.sendState();
     } else {
@@ -51,14 +70,17 @@ class Game {
   }
   putCard(card, idPlayer) {
     if (idPlayer == this.turn.id) {
-      this.deck.addCard(this.stack.cardOnTop);
-      this.stack.putOnTop(card);
-
+      if (this.action.type == "none") {
+        this.action = card.action;
+        this.action.assign(this.deck, this.stack);
+      }
+      this.action.putCard(card);
       this.turn.removeCard(card);
-      this.card.direction === "right"
+
+      card.direction === "right"
         ? this.nextTurn("right")
         : this.nextTurn("left");
-      this.nextTurn("left");
+
       this.sendState();
     } else {
       throw new Error("It's not your turn");

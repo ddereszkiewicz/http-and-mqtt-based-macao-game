@@ -8,6 +8,10 @@ class Player {
     this.right;
     this.hand = [];
     this.game;
+    this.waitingTours = 0;
+  }
+  wait(power) {
+    this.waitingTours = power;
   }
   findCard(color, value) {
     const result = this.hand.find(
