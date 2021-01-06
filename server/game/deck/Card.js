@@ -5,7 +5,7 @@ class Card {
     this.color = color;
     this.value = value;
     this.id = id;
-    this.action = new ActionNone("none");
+    this.action = new ActionNone();
   }
 }
 

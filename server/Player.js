@@ -30,11 +30,28 @@ class Player {
   removeCard(card) {
     this.hand = this.hand.filter(c => c.id != card.id);
   }
-  putCard(color, value) {
+  putCard(color, value, payload) {
     const card = this.findCard(color, value);
-
+    if (card.value == "jack") {
+      if (
+        payload !== "3" &&
+        payload !== "2" &&
+        payload !== "king" &&
+        payload !== "4" &&
+        payload !== "ace"
+      ) {
+        card.action.value = payload;
+        card.action.starter = this.id;
+      } else {
+        throw new Error("You cannot demand action cards");
+      }
+    }
+    if (card.value == "ace") {
+      card.newColor = payload;
+    }
     this.game.putCard(card, this.id);
   }
+
   setLeft(left) {
     this.left = left;
   }

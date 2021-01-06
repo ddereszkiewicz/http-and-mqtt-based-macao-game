@@ -1,5 +1,5 @@
 const Card = require("./Card");
-const { ActionTake, ActionWait } = require("../Action");
+const { ActionTake, ActionWait, ActionDemand } = require("../Action");
 
 class TakingCard extends Card {
   constructor(color, value, power, direction) {
@@ -7,18 +7,28 @@ class TakingCard extends Card {
 
     this.power = power;
     this.direction = direction;
-    this.action = new ActionTake("takeCards");
+    this.action = new ActionTake(power);
   }
 }
 
 class WaitingCard extends Card {
-  constructor(color, value, power) {
+  constructor(color, value) {
     super(color, value);
 
-    this.power = power;
+    this.power = 1;
     this.direction = "left";
-    this.action = new ActionWait("wait");
+    this.action = new ActionWait();
   }
 }
 
-module.exports = { TakingCard, WaitingCard };
+class DemandCard extends Card {
+  constructor(color, value) {
+    super(color, value);
+    this.direction = "left";
+    this.demandedValue;
+    this.starter;
+    this.action = new ActionDemand();
+  }
+}
+
+module.exports = { TakingCard, WaitingCard, DemandCard };

@@ -26,10 +26,10 @@ app.post("/:idPlayer/take-card", (req, res) => {
 
 app.post("/:idPlayer/put-card", (req, res) => {
   try {
-    const { color, value } = req.body;
+    const { color, value, pickedColor, pickedValue } = req.body;
 
     const player = main.findPlayerById(req.params.idPlayer);
-    player.putCard(color, value);
+    player.putCard(color, value, pickedColor, pickedValue);
 
     res.send({ status: true });
   } catch (error) {
@@ -96,5 +96,5 @@ app.post("/join-room", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`App listening at http://localhost:${port}`);
 });

@@ -6,11 +6,13 @@ class Game {
     this.players = players;
     this.mqttHandler = mqttHandler;
     this.turn = this.players[0];
+
     this.stack = new Stack();
     this.deck = new Deck(this.stack);
-    this.action = new ActionNone("none");
+
     this.running = true;
-    this.action.assign(this.deck, this.stack);
+    this.setAction(new ActionNone());
+    this.stack.assignDeck(this.deck);
   }
   nextTurn(direction) {
     direction == "left"
@@ -44,12 +46,13 @@ class Game {
           value: card.value,
         })),
         cardOnTop: {
-          color: this.stack.currentColor,
-          value: this.stack.currentValue,
+          color: this.stack.cardOnTop.color,
+          value: this.stack.cardOnTop.value,
         },
         currentColor: this.stack.currentColor,
         currentValue: this.stack.currentValue,
         running: this.running,
+        effect: { type: this.action.type, power: this.action.power },
         turn: { id: this.turn.id, name: this.turn.name },
       };
 
@@ -68,14 +71,26 @@ class Game {
       throw new Error("It's not your turn");
     }
   }
+  setAction(action) {
+    const prevAction = this.action;
+    this.action = action;
+    this.action.assign(this.deck, this.stack);
+    return prevAction;
+  }
+
   putCard(card, idPlayer) {
     if (idPlayer == this.turn.id) {
-      if (this.action.type == "none") {
-        this.action = card.action;
-        this.action.assign(this.deck, this.stack);
-      }
       this.action.putCard(card);
       this.turn.removeCard(card);
+      if (this.turn.id == this.action.starter) {
+        this.setAction(new ActionNone());
+      }
+      if (this.action.type == "none") {
+        this.setAction(card.action);
+      }
+      if (card.value == "ace") {
+        this.stack.currentColor = card.newColor;
+      }
 
       card.direction === "right"
         ? this.nextTurn("right")
