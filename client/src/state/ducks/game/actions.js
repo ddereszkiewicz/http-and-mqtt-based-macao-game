@@ -1,4 +1,4 @@
-import { IMPORT_STATE } from "./types";
+import { IMPORT_STATE, SELECT_CARD, SWITCH_MODE } from "./types";
 const axios = require("axios");
 export const importState = state => ({
   type: IMPORT_STATE,
@@ -14,13 +14,22 @@ export const startGame = async roomID => {
   }
 };
 
-export const putCard = async (idUser, card) => {
+export const selectCard = payload => ({
+  type: SELECT_CARD,
+  payload: payload,
+});
+export const switchMode = payload => ({
+  type: SWITCH_MODE,
+});
+
+export const putCard = async (idUser, card, payload) => {
   try {
     const result = await axios.post(
       `http://localhost:5000/${idUser}/put-card`,
       {
         value: card.value,
         color: card.color,
+        payload: payload,
       }
     );
     console.log(result.data);

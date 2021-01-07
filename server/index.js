@@ -26,10 +26,10 @@ app.post("/:idPlayer/take-card", (req, res) => {
 
 app.post("/:idPlayer/put-card", (req, res) => {
   try {
-    const { color, value, pickedColor, pickedValue } = req.body;
+    const { color, value, payload } = req.body;
 
     const player = main.findPlayerById(req.params.idPlayer);
-    player.putCard(color, value, pickedColor, pickedValue);
+    player.putCard(color, value, payload);
 
     res.send({ status: true });
   } catch (error) {

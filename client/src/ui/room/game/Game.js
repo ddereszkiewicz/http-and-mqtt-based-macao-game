@@ -13,7 +13,7 @@ const Game = ({ game, user }) => {
       <div className="opponentsContainer">{opponents}</div>
       <div className="center">
         <Stack card={game.cardOnTop} />
-        <Deck user={user} />
+        <Deck user={user} game={game} />
       </div>
       <Player game={game} user={user} />
     </div>

@@ -6,6 +6,11 @@ class Stack {
     this.currentColor;
     this.currentValue;
   }
+
+  putCards(cards) {
+    console.log("working");
+    cards.forEach(card => this.putOnTop(card));
+  }
   putOnTop(card) {
     this.cardOnTop && this.deck.addCard(this.cardOnTop);
     this.stack.push(card);

@@ -4,7 +4,7 @@ class ActionNone {
     this.deck;
     this.stack;
   }
-  putCard(card) {
+  putCard(card, player) {
     if (this.stack.currentColor && this.stack.currentValue) {
       if (
         card.color === this.stack.currentColor ||
@@ -13,6 +13,7 @@ class ActionNone {
         this.stack.currentValue == "queen"
       ) {
         this.stack.putOnTop(card);
+        player.removeCard(card);
       } else {
         throw new Error("Card doesn't match the card on top  of the stack ");
       }
@@ -41,7 +42,7 @@ class ActionTake extends ActionNone {
     this.power = this.initialPower;
   }
 
-  putCard(card) {
+  putCard(card, player) {
     if (card.action.type == this.type) {
       if (
         card.color === this.stack.currentColor ||
@@ -49,6 +50,7 @@ class ActionTake extends ActionNone {
         this.stack.currentValue == "queen"
       ) {
         this.stack.putOnTop(card);
+        player.removeCard(card);
       } else {
         throw new Error("Card doesn't match the card on top  of the stack ");
       }
@@ -78,13 +80,17 @@ class ActionDemand extends ActionNone {
     this.starter;
     this.type = "demand";
   }
-  putCard(card) {
+  putCard(card, player) {
     if (card.value == "jack") {
       this.starter = card.starter;
       this.power = card.demandedValue;
     }
     if (card.value == this.power || card.value == "jack") {
-      this.stack.putOnTop(card);
+      const cards = player.hand.filter(c => c.value === card.value);
+      console.log(cards);
+
+      this.stack.putCards(cards);
+      player.removeCards(cards);
     } else {
       throw new Error("Card doesn't match the demanded value ");
     }

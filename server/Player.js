@@ -30,17 +30,22 @@ class Player {
   removeCard(card) {
     this.hand = this.hand.filter(c => c.id != card.id);
   }
+  removeCards(cards) {
+    cards.forEach(card => this.removeCard(card));
+  }
   putCard(color, value, payload) {
     const card = this.findCard(color, value);
+
     if (card.value == "jack") {
       if (
         payload !== "3" &&
         payload !== "2" &&
         payload !== "king" &&
         payload !== "4" &&
-        payload !== "ace"
+        payload !== "ace" &&
+        payload !== "jack"
       ) {
-        card.action.value = payload;
+        card.action.power = payload;
         card.action.starter = this.id;
       } else {
         throw new Error("You cannot demand action cards");

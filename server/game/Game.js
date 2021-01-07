@@ -80,7 +80,7 @@ class Game {
 
   putCard(card, idPlayer) {
     if (idPlayer == this.turn.id) {
-      this.action.putCard(card);
+      this.action.putCard(card, this.turn);
       this.turn.removeCard(card);
       if (this.turn.id == this.action.starter) {
         this.setAction(new ActionNone());
