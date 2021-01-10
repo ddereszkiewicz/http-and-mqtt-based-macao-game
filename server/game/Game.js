@@ -1,24 +1,41 @@
 const Deck = require("./deck/Deck");
 const Stack = require("./Stack");
+const Voting = require("./Voting");
 const { ActionNone } = require("./Action");
 class Game {
-  constructor(players, spectators, roomId, mqttHandler) {
+  constructor(players, spectators, roomId, mqttHandler, room) {
     this.players = players;
     this.mqttHandler = mqttHandler;
     this.turn = this.players[0];
+
     this.spectators = spectators;
     this.stack = new Stack();
     this.deck = new Deck(this.stack);
     this.roomId = roomId;
     this.running = true;
+    this.winner = "";
+    this.lastAction;
+    this.lastActionPower;
+    this.lastTurn;
+    this.lastMoveType;
+    this.voting;
     this.setAction(new ActionNone());
     this.stack.assignDeck(this.deck);
+    this.room = room;
+  }
+  checkForWin() {
+    if (this.turn.hand.length === 0) {
+      this.running = false;
+      this.winner = { name: this.turn.name, id: this.turn.id };
+      this.room.reset();
+    }
   }
   addSpect(viewer) {
     this.spectators.push(viewer);
     setTimeout(() => this.sendState(), 1000);
   }
   nextTurn(direction) {
+    this.lastTurn = this.turn;
     direction == "left"
       ? (this.turn = this.turn.left)
       : (this.turn = this.turn.right);
@@ -27,6 +44,50 @@ class Game {
       direction == "left"
         ? (this.turn = this.turn.left)
         : (this.turn = this.turn.right);
+    }
+  }
+  vote(vote) {
+    if (this.voting) {
+      this.voting.vote(vote);
+      if (this.voting.hasEverybodyVoted()) {
+        const res = this.voting.checkIfValid();
+        if (res) {
+          console.log("undoing");
+          this.undo();
+        }
+        this.voting = null;
+        this.sendState();
+      }
+    } else {
+      throw new Error("no voting at the moment");
+    }
+  }
+  undo() {
+    if (this.action.type == this.lastAction.type) {
+      this.action.power = this.lastActionPower;
+    } else {
+      this.action = this.lastAction;
+      this.action.power = this.lastActionPower;
+    }
+
+    if (this.lastMoveType == "put") {
+      this.stack.undo(this.lastTurn);
+    } else if (this.lastMoveType == "take") {
+      this.deck.undo(this.lastTurn);
+    }
+    this.turn = this.lastTurn;
+    this.sendState();
+  }
+  requestUndo(id) {
+    if (
+      this.lastTurn &&
+      id == this.lastTurn.id &&
+      this.lastTurn.id !== this.turn.id
+    ) {
+      this.voting = new Voting(this.players.length - 1);
+      this.sendState();
+    } else {
+      throw new Error("You cannot undo now");
     }
   }
 
@@ -47,6 +108,8 @@ class Game {
         color: this.stack.cardOnTop.color,
         value: this.stack.cardOnTop.value,
       },
+
+      winner: this.winner,
       currentColor: this.stack.currentColor,
       currentValue: this.stack.currentValue,
       running: this.running,
@@ -82,6 +145,10 @@ class Game {
           color: card.color,
           value: card.value,
         })),
+        winner: this.winner,
+        voting: this.voting
+          ? { name: this.lastTurn.name, id: this.lastTurn.id }
+          : "",
         cardOnTop: {
           color: this.stack.cardOnTop.color,
           value: this.stack.cardOnTop.value,
@@ -99,48 +166,61 @@ class Game {
     });
   }
   takeCard(idPlayer) {
-    if (idPlayer == this.turn.id) {
-      this.action.giveCards(this.turn);
-      if (this.action.type !== "demand") {
-        this.setAction(new ActionNone());
+    if (!this.voting) {
+      if (idPlayer == this.turn.id) {
+        this.lastAction = this.action;
+        this.lastActionPower = this.action.power;
+        this.action.giveCards(this.turn);
+        if (this.action.type !== "demand") {
+          this.setAction(new ActionNone());
+        }
+        if (this.turn.id == this.action.starter) {
+          this.setAction(new ActionNone());
+        }
+        this.nextTurn("left");
+
+        this.lastMoveType = "take";
+        this.sendState();
+      } else {
+        throw new Error("It's not your turn");
       }
-      if (this.turn.id == this.action.starter) {
-        this.setAction(new ActionNone());
-      }
-      this.nextTurn("left");
-      this.sendState();
     } else {
-      throw new Error("It's not your turn");
+      throw new Error("Voting in progress");
     }
   }
   setAction(action) {
-    const prevAction = this.action;
     this.action = action;
     this.action.assign(this.deck, this.stack);
-    return prevAction;
   }
 
   putCard(card, idPlayer) {
-    if (idPlayer == this.turn.id) {
-      this.action.putCard(card, this.turn);
+    if (!this.voting) {
+      if (idPlayer == this.turn.id) {
+        this.lastAction = this.action;
+        this.lastActionPower = this.action.power;
+        this.action.putCard(card, this.turn);
 
-      if (this.turn.id == this.action.starter) {
-        this.setAction(new ActionNone());
-      }
-      if (this.action.type == "none") {
-        this.setAction(card.action);
-      }
-      if (card.value == "ace") {
-        this.stack.currentColor = card.newColor;
-      }
+        if (this.turn.id == this.action.starter) {
+          this.setAction(new ActionNone());
+        }
+        if (this.action.type == "none") {
+          this.setAction(card.action);
+        }
+        if (card.value == "ace") {
+          this.stack.currentColor = card.newColor;
+        }
+        this.checkForWin();
+        card.direction === "right"
+          ? this.nextTurn("right")
+          : this.nextTurn("left");
 
-      card.direction === "right"
-        ? this.nextTurn("right")
-        : this.nextTurn("left");
-
-      this.sendState();
+        this.lastMoveType = "put";
+        this.sendState();
+      } else {
+        throw new Error("It's not your turn");
+      }
     } else {
-      throw new Error("It's not your turn");
+      throw new Error("Voting in progress");
     }
   }
   start() {

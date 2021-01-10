@@ -5,12 +5,12 @@ import Card from "./Card";
 import DifferentColorDisplay from "./DifferentColorDisplay";
 import ValueSelection from "./ValueSelection";
 import EffectDisplay from "./EffectDisplay";
-
+const axios = require("axios");
 const Player = ({ user, game, onSelectCard }) => {
   const selectCard = card => {
     if (
-      game.cardOnTop.value === card.value ||
-      game.cardOnTop.color === card.color ||
+      game.currentValue === card.value ||
+      game.currentColor === card.color ||
       game.cardOnTop.value === "queen"
     ) {
       onSelectCard(card);
@@ -18,6 +18,13 @@ const Player = ({ user, game, onSelectCard }) => {
       alert("Card doesn't match the card on the top of the stack");
     }
   };
+  const requestUndo = () => {
+    axios
+      .post(`http://localhost:5000/${user.id}/undo`)
+      .then(({ data }) => !data.status && alert(data.message))
+      .catch(e => alert(e.message));
+  };
+
   const handleClick = card => {
     if (!game.selected) {
       return card.value === "jack" || card.value === "ace"
@@ -48,11 +55,14 @@ const Player = ({ user, game, onSelectCard }) => {
         <ValueSelection game={game} putCard={putCard} user={user} />
       )}
       <div className="playerName">{user.name}</div>
-      {game.cardOnTop.color != game.currentColor ? (
-        <DifferentColorDisplay game={game} />
-      ) : (
-        <EffectDisplay game={game} />
-      )}
+      <div className="leftSideContainer">
+        <button onClick={requestUndo}>Request Undo</button>
+        {game.cardOnTop.color != game.currentColor ? (
+          <DifferentColorDisplay game={game} />
+        ) : (
+          <EffectDisplay game={game} />
+        )}
+      </div>
     </div>
   );
 };

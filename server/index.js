@@ -12,6 +12,32 @@ const mqttHandler = new MqttHandler();
 app.use(express.json());
 app.use(cors());
 
+app.post("/:idPlayer/vote", (req, res) => {
+  try {
+    const vote = req.body.vote;
+
+    const player = main.findPlayerById(req.params.idPlayer);
+    player.vote(vote);
+
+    res.send({ status: true });
+  } catch (error) {
+    console.log(error);
+    res.send({ status: false, message: error.message });
+  }
+});
+
+app.post("/:idPlayer/undo", (req, res) => {
+  try {
+    const player = main.findPlayerById(req.params.idPlayer);
+    player.requestUndo();
+
+    res.send({ status: true });
+  } catch (error) {
+    console.log(error);
+    res.send({ status: false, message: error.message });
+  }
+});
+
 app.post("/join-view", (req, res) => {
   console.log(req.body);
   const playerId = req.body.userId;

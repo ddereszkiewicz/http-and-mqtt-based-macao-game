@@ -1,9 +1,16 @@
-import { IMPORT_STATE, SELECT_CARD, SWITCH_MODE } from "./types";
+import { IMPORT_STATE, SELECT_CARD } from "./types";
 const axios = require("axios");
-export const importState = state => ({
-  type: IMPORT_STATE,
-  payload: state,
-});
+export const importState = state => {
+  console.log(state.winner);
+  if (state.winner) {
+    alert(`The winner is ${state.winner.name}`);
+  }
+
+  return {
+    type: IMPORT_STATE,
+    payload: state,
+  };
+};
 
 export const startGame = async roomID => {
   try {
@@ -18,7 +25,6 @@ export const selectCard = payload => ({
   type: SELECT_CARD,
   payload: payload,
 });
-
 
 export const putCard = async (idUser, card, payload) => {
   try {

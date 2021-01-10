@@ -1,4 +1,4 @@
-import { IMPORT_STATE, SELECT_CARD, SWITCH_MODE } from "./types";
+import { IMPORT_STATE, SELECT_CARD } from "./types";
 
 const initialState = {
   hand: [],
@@ -8,6 +8,8 @@ const initialState = {
   currentValue: "",
   turn: "",
   selected: null,
+  winner: "",
+  voting: false,
 };
 
 const gameReducer = (state = initialState, action) => {

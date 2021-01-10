@@ -6,6 +6,7 @@ const initialState = {
   currentColor: "",
   currentValue: "",
   turn: "",
+  winner: "",
 };
 
 const spectatorReducer = (state = initialState, action) => {

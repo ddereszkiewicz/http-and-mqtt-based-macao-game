@@ -203,26 +203,13 @@ img
     display: flex
     
     width: calc( 100% - 350px )
-    .effectDisplay
-        .card
-            height: 20vh
-        flex-grow: 1
-        color: black
-        background-color: whitesmoke
-        border: 4px solid black
-        align-self: flex-end
-        height: 40%
-        .effectName
-            text-align: center
-            line-height: 50px
-            font-size: 30px
-        .effectPower
-            font-size: 24px
-            
-            height: calc(100% - 50px)
-            display: flex
-            justify-content: center
-            align-items: center
+    .leftSideContainer
+        display: flex
+        background-color: orange
+        flex-direction: column
+        justify-content: flex-end
+
+   
     &.active
         .playerName
             animation: pulse 1s linear  infinite alternate
@@ -244,10 +231,13 @@ img
         height: 100%
         background-color: blue
         .card 
+            &:hover
+                transform: scale(110%)
             height: 12vh
             margin: 2px
 .effectDisplay
     width: 310px
+    max-height: 310px
     .card
         height: 20vh
     flex-grow: 1

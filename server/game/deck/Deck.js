@@ -57,7 +57,13 @@ class Deck {
       new Card("clubs", "king"),
       new Card("clubs", "ace"),
     ];
+    this.lastDealed = [];
     this.stack = stack;
+  }
+
+  undo(player) {
+    player.removeCards(this.lastDealed);
+    this.lastDealed.forEach(card => this.cards.push(card));
   }
   tass() {
     const cardsFromStack = this.stack.reTass();
@@ -74,17 +80,22 @@ class Deck {
     const random = this.getRandomCard();
     this.stack.putOnTop(random);
   }
-
+  removeCard(card) {
+    this.cards = this.cards.filter(c => c.id != card.id);
+  }
   giveCard(player, number) {
     if (this.cards.length >= number) {
+      this.lastDealed = [];
       for (let i = 0; i < number; i++) {
         const card = this.getRandomCard();
         player.addCardToHand(card);
+        this.lastDealed.push(card);
       }
     } else {
       throw new Error("Deck is empty");
     }
   }
+
   addCard(card) {
     this.cards.push(card);
   }

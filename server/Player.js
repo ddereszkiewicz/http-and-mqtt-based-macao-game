@@ -7,8 +7,15 @@ class Player {
     this.left;
     this.right;
     this.hand = [];
+    this.prevHand = this.hand;
     this.game;
     this.waitingTours = 0;
+  }
+  vote(vote) {
+    this.game.vote(vote);
+  }
+  requestUndo() {
+    this.game.requestUndo(this.id);
   }
   wait(power) {
     this.waitingTours = power;

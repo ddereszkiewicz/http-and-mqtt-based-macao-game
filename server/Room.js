@@ -23,9 +23,13 @@ class Room {
       this.players,
       this.spectators,
       this.id,
-      this.mqttHandler
+      this.mqttHandler,
+      this
     );
     this.game.start();
+  }
+  reset() {
+    this.game = null;
   }
   addPlayer(player) {
     if (!this.game) {
