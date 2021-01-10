@@ -1,13 +1,13 @@
 import React from "react";
 import { useFormik } from "formik";
 import { sendMessage } from "../../../state/ducks/chat/actions";
-const ChatSender = ({ name, roomId }) => {
+const ChatSender = ({ name, room }) => {
   const formik = useFormik({
     initialValues: {
       text: "",
     },
     onSubmit: values => {
-      sendMessage(name, values.text, roomId);
+      sendMessage(name, values.text, room.id);
       formik.resetForm();
     },
   });

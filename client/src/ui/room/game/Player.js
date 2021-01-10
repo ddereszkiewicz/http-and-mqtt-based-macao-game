@@ -1,10 +1,6 @@
 import { connect } from "react-redux";
 import ColorSelection from "./ColorSelection";
-import {
-  putCard,
-  selectCard,
-  switchMode,
-} from "../../../state/ducks/game/actions";
+import { putCard, selectCard } from "../../../state/ducks/game/actions";
 import Card from "./Card";
 import DifferentColorDisplay from "./DifferentColorDisplay";
 import ValueSelection from "./ValueSelection";

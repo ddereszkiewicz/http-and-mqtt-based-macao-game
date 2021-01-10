@@ -6,7 +6,7 @@ const Chat = ({ user, room }) => {
   return (
     <div className="chatContainer">
       <ChatViewer />
-      <ChatSender name={user.name} roomId={room.id} />
+      <ChatSender name={user.name} room={room} />
     </div>
   );
 };

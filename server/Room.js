@@ -1,5 +1,3 @@
-const { v4 } = require("uuid");
-const MqttHandler = require("./MqttHandler");
 const Chat = require("./chat/Chat");
 const Game = require("./game/Game");
 class Room {
@@ -11,9 +9,22 @@ class Room {
     this.chat = new Chat(this.mqttHandler, id);
     this.game;
     this.publishState();
+    this.spectators = [];
+  }
+  addSpect(viewer) {
+    if (this.game) {
+      this.game.addSpect(viewer);
+    }
+    this.spectators.push(viewer);
+    this.publishState();
   }
   startGame() {
-    this.game = new Game(this.players, this.mqttHandler);
+    this.game = new Game(
+      this.players,
+      this.spectators,
+      this.id,
+      this.mqttHandler
+    );
     this.game.start();
   }
   addPlayer(player) {
@@ -32,9 +43,16 @@ class Room {
     setTimeout(() => {
       this.mqttHandler.publish(
         `room/${this.id}`,
-        JSON.stringify(
-          this.players.map(player => ({ name: player.name, id: player.id }))
-        )
+        JSON.stringify({
+          players: this.players.map(player => ({
+            name: player.name,
+            id: player.id,
+          })),
+          spectators: this.spectators.map(spect => ({
+            name: spect.name,
+            id: spect.id,
+          })),
+        })
       );
     }, 2000);
   }

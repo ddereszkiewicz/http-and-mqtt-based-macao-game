@@ -1,18 +1,19 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
+import React from "react";
+
 import Chat from "./chat/Chat";
-import { addMqttClient } from "../../state/ducks/mqttHandler/actions";
+
 import { startGame } from "../../state/ducks/game/actions";
 import Game from "./game/Game";
 import WaitingScreen from "./waiting_screen/WaitingScreen";
-const Room = ({ room, user, addMqttClient, game }) => {
-  useEffect(() => {
-    addMqttClient(room.id, user.id);
-  }, [addMqttClient, room.id, user.id]);
-
+import SpectatorView from "./game/SpectatorView";
+const Room = ({ room, user, game }) => {
   const handleRoutes = () => {
     if (game.running) {
-      return <Game game={game} user={user} />;
+      return room.isPlayer ? (
+        <Game game={game} user={user} />
+      ) : (
+        <SpectatorView game={game} />
+      );
     } else if (room.creator) {
       return <button onClick={() => startGame(room.id)}>Start Game</button>;
     }
@@ -27,9 +28,4 @@ const Room = ({ room, user, addMqttClient, game }) => {
   );
 };
 
-const mapStateToProps = state => ({
-  room: state.room,
-  user: state.user,
-  game: state.game,
-});
-export default connect(mapStateToProps, { addMqttClient })(Room);
+export default Room;

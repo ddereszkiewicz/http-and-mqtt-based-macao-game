@@ -2,17 +2,21 @@ const Deck = require("./deck/Deck");
 const Stack = require("./Stack");
 const { ActionNone } = require("./Action");
 class Game {
-  constructor(players, mqttHandler) {
+  constructor(players, spectators, roomId, mqttHandler) {
     this.players = players;
     this.mqttHandler = mqttHandler;
     this.turn = this.players[0];
-
+    this.spectators = spectators;
     this.stack = new Stack();
     this.deck = new Deck(this.stack);
-
+    this.roomId = roomId;
     this.running = true;
     this.setAction(new ActionNone());
     this.stack.assignDeck(this.deck);
+  }
+  addSpect(viewer) {
+    this.spectators.push(viewer);
+    setTimeout(() => this.sendState(), 1000);
   }
   nextTurn(direction) {
     direction == "left"
@@ -25,11 +29,43 @@ class Game {
         : (this.turn = this.turn.right);
     }
   }
+
+  sendViewState() {
+    const playerToSend = this.players.map(p => ({
+      cardsCount: p.hand.length,
+      name: p.name,
+      id: p.id,
+    }));
+    const viewers = this.spectators.map(viewer => ({
+      name: viewer.name,
+      id: viewer.id,
+    }));
+    const message = {
+      viewers: viewers,
+      players: playerToSend,
+      cardOnTop: {
+        color: this.stack.cardOnTop.color,
+        value: this.stack.cardOnTop.value,
+      },
+      currentColor: this.stack.currentColor,
+      currentValue: this.stack.currentValue,
+      running: this.running,
+      effect: { type: this.action.type, power: this.action.power },
+      turn: { id: this.turn.id, name: this.turn.name },
+    };
+    this.mqttHandler.publish(
+      `spectate/${this.roomId}`,
+      JSON.stringify(message)
+    );
+  }
   sendState() {
+    const viewers = this.spectators.map(viewer => ({
+      name: viewer.name,
+      id: viewer.id,
+    }));
     this.players.forEach(player => {
       const index = this.players.findIndex(p => p.id === player.id);
       const beforeEl = this.players.slice(0, index);
-
       const playerToSend = this.players
         .slice(index, this.players.length)
         .concat(beforeEl)
@@ -40,6 +76,7 @@ class Game {
           id: p.id,
         }));
       const message = {
+        viewers: viewers,
         players: playerToSend,
         hand: player.hand.map(card => ({
           color: card.color,
@@ -58,13 +95,18 @@ class Game {
 
       const toSend = JSON.stringify(message);
       this.mqttHandler.publish(`game-state/${player.id}`, toSend);
+      this.sendViewState();
     });
   }
   takeCard(idPlayer) {
     if (idPlayer == this.turn.id) {
       this.action.giveCards(this.turn);
-      this.action = new ActionNone("none");
-      this.action.assign(this.deck, this.stack);
+      if (this.action.type !== "demand") {
+        this.setAction(new ActionNone());
+      }
+      if (this.turn.id == this.action.starter) {
+        this.setAction(new ActionNone());
+      }
       this.nextTurn("left");
       this.sendState();
     } else {
@@ -81,7 +123,7 @@ class Game {
   putCard(card, idPlayer) {
     if (idPlayer == this.turn.id) {
       this.action.putCard(card, this.turn);
-      this.turn.removeCard(card);
+
       if (this.turn.id == this.action.starter) {
         this.setAction(new ActionNone());
       }

@@ -18,9 +18,7 @@ export const selectCard = payload => ({
   type: SELECT_CARD,
   payload: payload,
 });
-export const switchMode = payload => ({
-  type: SWITCH_MODE,
-});
+
 
 export const putCard = async (idUser, card, payload) => {
   try {

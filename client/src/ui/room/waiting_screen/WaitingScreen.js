@@ -7,6 +7,10 @@ const WaitingScreen = ({ room }) => {
 
   return (
     <div className="waitingScreen">
+      <div className="spectatorsNumber">
+        spectators: {room.spectators.length}
+      </div>
+
       <p>waiting players:</p>
       <div className="playerNames">{playersNames}</div>
     </div>

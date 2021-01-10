@@ -165,12 +165,43 @@ img
         right: 0%
         transform: translateY(-50%)
         margin-right: 40px
+
+.bottomPlayer
+    position: relative
+    left: 310px
+    background-color: lightgreen
+    flex-grow: 1
+    display: flex
+    width: calc( 100% - 310px )
+    
+    .opponent
+        display: flex
+        flex-direction: column
+        
+        flex-wrap: wrap
+        margin: 20px
+        width: 70%
+        height: 100%
+        background-color: blue
+        &.active
+            .name
+                animation: pulse 1s linear  infinite alternate
+        .name
+            text-align: center
+            margin-bottom: 15px
+
+        .cards
+            justify-content: center
+            display: flex
+            flex-wrap: wrap
+            width: 100%
 .player
     position: relative
     left: 350px
     background-color: lightgreen
     flex-grow: 1
     display: flex
+    
     width: calc( 100% - 350px )
     .effectDisplay
         .card
@@ -192,7 +223,6 @@ img
             display: flex
             justify-content: center
             align-items: center
-
     &.active
         .playerName
             animation: pulse 1s linear  infinite alternate
@@ -216,7 +246,27 @@ img
         .card 
             height: 12vh
             margin: 2px
+.effectDisplay
+    width: 310px
+    .card
+        height: 20vh
+    flex-grow: 1
+    color: black
+    background-color: whitesmoke
+    border: 4px solid black
+    align-self: flex-end
+    height: 40%
+    .effectName
+        text-align: center
+        line-height: 50px
+        font-size: 30px
+    .effectPower
+        font-size: 24px
         
+        height: calc(100% - 50px)
+        display: flex
+        justify-content: center
+        align-items: center
 .waitingScreen
     font-size: 24px
     
@@ -230,6 +280,9 @@ img
     display: flex
 
     transform: translate(-50%,-50%)
+    .spectatorsNumber
+        color: white
+        text-align: center
     p
         height: 40px
         line-height: 40px

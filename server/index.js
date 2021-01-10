@@ -12,6 +12,22 @@ const mqttHandler = new MqttHandler();
 app.use(express.json());
 app.use(cors());
 
+app.post("/join-view", (req, res) => {
+  console.log(req.body);
+  const playerId = req.body.userId;
+  const roomId = req.body.roomId;
+  try {
+    const player = main.findPlayerById(playerId);
+    const room = main.findRoomById(roomId);
+
+    room.addSpect(player);
+    res.send({ status: true });
+  } catch (error) {
+    console.log(error);
+    res.send({ status: false, message: error.message });
+  }
+});
+
 app.post("/:idPlayer/take-card", (req, res) => {
   try {
     const player = main.findPlayerById(req.params.idPlayer);
@@ -70,6 +86,7 @@ app.post("/register", (req, res) => {
 });
 
 app.post("/:id/chat", (req, res) => {
+  console.log("wywołano chat");
   const id = req.params.id;
   const message = new Message(req.body.author, req.body.text);
   try {
