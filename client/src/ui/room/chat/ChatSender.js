@@ -7,7 +7,11 @@ const ChatSender = ({ name, room }) => {
       text: "",
     },
     onSubmit: values => {
-      sendMessage(name, values.text, room.id);
+      sendMessage(
+        room.isPlayer ? name : name + "(spectator)",
+        values.text,
+        room.id
+      );
       formik.resetForm();
     },
   });
