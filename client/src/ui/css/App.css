@@ -18,13 +18,16 @@ body {
 }
 
 .selectionContainer {
+  background-color: whitesmoke;
   position: fixed;
   top: 50%;
   left: 50%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  background-color: royalblue;
+  color: black;
+  border: 3px black solid;
+  border-radius: 10px;
   width: 50%;
   height: 50%;
   -webkit-box-orient: vertical;
@@ -86,7 +89,6 @@ img {
 .App {
   height: 100%;
   width: 100%;
-  background-color: green;
 }
 
 .joinRoomForm {
@@ -144,7 +146,7 @@ img {
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
   color: black;
-  background-color: whitesmoke;
+  background-color: lightgrey;
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
@@ -155,7 +157,6 @@ img {
 .chatContainer .chatViewer {
   height: 300px;
   overflow: scroll;
-  background-color: royalblue;
   width: 270px;
 }
 
@@ -169,7 +170,6 @@ img {
 }
 
 .gameContainer {
-  background-color: blue;
   -ms-flex-preferred-size: 100%;
       flex-basis: 100%;
   display: -webkit-box;
@@ -183,7 +183,6 @@ img {
 
 .opponentsContainer {
   font-size: 20px;
-  background-color: red;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -193,6 +192,9 @@ img {
 
 .opponentsContainer .opponent {
   width: 33%;
+  border: 2px black solid;
+  margin: 10px;
+  padding: 5px 0px;
 }
 
 .opponentsContainer .opponent.active .name {
@@ -242,7 +244,6 @@ img {
 .center {
   height: 15vh;
   position: relative;
-  background-color: yellow;
 }
 
 .center .stack {
@@ -265,7 +266,6 @@ img {
 .bottomPlayer {
   position: relative;
   left: 310px;
-  background-color: lightgreen;
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
@@ -288,7 +288,6 @@ img {
   margin: 20px;
   width: 70%;
   height: 100%;
-  background-color: blue;
 }
 
 .bottomPlayer .opponent.active .name {
@@ -313,10 +312,15 @@ img {
   width: 100%;
 }
 
+#leaveButton {
+  position: fixed;
+  height: 50px;
+  width: 100px;
+}
+
 .player {
   position: relative;
   left: 350px;
-  background-color: lightgreen;
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
@@ -330,7 +334,6 @@ img {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  background-color: orange;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -365,7 +368,6 @@ img {
   margin: 20px;
   width: 70%;
   height: 100%;
-  background-color: blue;
 }
 
 .player .playersHand .card {
@@ -376,6 +378,53 @@ img {
 .player .playersHand .card:hover {
   -webkit-transform: scale(110%);
           transform: scale(110%);
+}
+
+.voting {
+  position: fixed;
+  width: 30%;
+  height: 40%;
+  left: 50vw;
+  bottom: 50%;
+  z-index: 1;
+  background-color: white;
+  color: black;
+  -webkit-transform: translate(-50%, 50%);
+          transform: translate(-50%, 50%);
+  border: solid black 3px;
+  border-radius: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.voting .buttons {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.voting .buttons button {
+  width: 50%;
+  font-size: 30px;
+  -webkit-transition: all 0.1s linear;
+  transition: all 0.1s linear;
+}
+
+.voting .buttons button:hover {
+  background-color: lightgrey;
+}
+
+.voting .prompt {
+  text-align: center;
+  font-size: 30px;
 }
 
 .effectDisplay {

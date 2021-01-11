@@ -1,7 +1,5 @@
-const { v4 } = require("uuid");
-
 class Player {
-  constructor(name, id = v4()) {
+  constructor(name, id) {
     this.name = name;
     this.id = id;
     this.left;
@@ -12,7 +10,7 @@ class Player {
     this.waitingTours = 0;
   }
   vote(vote) {
-    this.game.vote(vote);
+    this.game.vote(vote, this.id);
   }
   requestUndo() {
     this.game.requestUndo(this.id);

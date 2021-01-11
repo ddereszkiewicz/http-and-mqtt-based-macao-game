@@ -1,9 +1,11 @@
+import { LEAVE_GAME } from "../game/types";
 import {
   ADD_PLAYER,
   ADD_SPECT,
   CREATE_ROOM,
   JOIN_ROOM,
   JOIN_ROOM_AS_SPECT,
+  LEAVE_ROOM,
 } from "./types";
 const axios = require("axios");
 export const joinRoom = (userId, roomId, client) => async dispatch => {
@@ -18,6 +20,26 @@ export const joinRoom = (userId, roomId, client) => async dispatch => {
     await client.subscribe(`room/${roomId}`);
     await client.subscribe(`game-state/${userId}`);
     await client.subscribe(`chat/${roomId}`);
+  } catch (error) {
+    console.log(error);
+    alert(error);
+  }
+};
+
+export const leaveRoom = (userId, roomId, client) => async dispatch => {
+  try {
+    const response = await axios.post("http://localhost:5000/leave-room", {
+      userId: userId,
+      roomId: roomId,
+    });
+    const handleDispatch = () => {
+      dispatch({ type: LEAVE_ROOM });
+      dispatch({ type: LEAVE_GAME });
+    };
+    response.data.status ? handleDispatch() : alert(response.data.message);
+    await client.unsubscribe(`room/${roomId}`);
+    await client.unsubscribe(`game-state/${userId}`);
+    await client.unsubscribe(`chat/${roomId}`);
   } catch (error) {
     console.log(error);
     alert(error);

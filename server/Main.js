@@ -2,8 +2,8 @@ class Main {
   constructor() {
     this.rooms = [];
     this.registeredPlayers = [];
-    this.roomNumber = 0;
-    this.playerId = 0;
+    this.roomNumber = 1;
+    this.playerId = 1;
   }
   addRoom(room) {
     this.rooms.push(room);

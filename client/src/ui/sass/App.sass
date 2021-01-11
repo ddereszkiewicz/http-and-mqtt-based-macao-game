@@ -18,11 +18,14 @@ body
 
     
 .selectionContainer
+    background-color: whitesmoke
     position: fixed
     top: 50%
     left: 50%
     display: flex
-    background-color: royalblue
+    color: black
+    border: 3px black solid
+    border-radius: 10px
     width: 50%
     height: 50%
     flex-direction: column
@@ -65,7 +68,7 @@ img
 
     height: 100%
     width: 100%
-    background-color: green
+    
  
 .joinRoomForm
 
@@ -103,7 +106,7 @@ img
 
     flex-wrap: wrap
     color: black
-    background-color: whitesmoke
+    background-color: lightgrey
     width: fit-content
     border: 2px black solid
     border-radius: 5px
@@ -111,7 +114,7 @@ img
     .chatViewer
         height: 300px
         overflow: scroll
-        background-color: royalblue        
+               
         width: 270px
         p 
             margin-left: 3px
@@ -119,20 +122,24 @@ img
     button
         width: 70px
 .gameContainer 
-    background-color: blue
+    
     flex-basis: 100%
     display: flex
     flex-direction: column
     
 .opponentsContainer
     font-size: 20px
-    background-color: red
+   
     display: flex
     justify-content: space-around
+    
     
 
     .opponent
         width: 33%
+        border: 2px black solid
+        margin: 10px
+        padding: 5px 0px
         &.active
             .name
                 animation: pulse 1s linear  infinite alternate
@@ -153,7 +160,7 @@ img
 .center
     height: 15vh
     position: relative
-    background-color: yellow
+    
     .stack
         position: absolute
         top: 50%
@@ -169,7 +176,7 @@ img
 .bottomPlayer
     position: relative
     left: 310px
-    background-color: lightgreen
+    
     flex-grow: 1
     display: flex
     width: calc( 100% - 310px )
@@ -182,7 +189,7 @@ img
         margin: 20px
         width: 70%
         height: 100%
-        background-color: blue
+       
         &.active
             .name
                 animation: pulse 1s linear  infinite alternate
@@ -195,17 +202,22 @@ img
             display: flex
             flex-wrap: wrap
             width: 100%
+#leaveButton
+    position: fixed
+    height: 50px
+    width: 100px
+  
 .player
     position: relative
     left: 350px
-    background-color: lightgreen
+    
     flex-grow: 1
     display: flex
     
     width: calc( 100% - 350px )
     .leftSideContainer
         display: flex
-        background-color: orange
+        
         flex-direction: column
         justify-content: flex-end
 
@@ -229,12 +241,41 @@ img
         margin: 20px
         width: 70%
         height: 100%
-        background-color: blue
+       
         .card 
             &:hover
                 transform: scale(110%)
             height: 12vh
             margin: 2px
+.voting
+    position: fixed
+    width: 30%
+    height: 40%
+    left: 50vw
+    bottom: 50%
+    z-index: 1
+    background-color: white
+    color: black
+    transform: translate(-50%,50%)
+    border: solid black 3px
+    border-radius: 10px
+    display: flex 
+    flex-direction: column
+    .buttons
+        flex-grow: 1
+        display: flex
+        
+        button
+            width: 50%
+            font-size: 30px
+            transition: all 0.1s linear
+            &:hover
+                background-color: lightgrey
+    .prompt 
+        
+        text-align: center
+        font-size: 30px
+
 .effectDisplay
     width: 310px
     max-height: 310px

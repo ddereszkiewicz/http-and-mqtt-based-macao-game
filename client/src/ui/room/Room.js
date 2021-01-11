@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import Chat from "./chat/Chat";
 
@@ -6,7 +6,9 @@ import { startGame } from "../../state/ducks/game/actions";
 import Game from "./game/Game";
 import WaitingScreen from "./waiting_screen/WaitingScreen";
 import SpectatorView from "./game/SpectatorView";
-const Room = ({ room, user, game }) => {
+import { connect } from "react-redux";
+import { leaveRoom } from "../../state/ducks/room/actions";
+const Room = ({ room, user, game, client, leaveRoom }) => {
   const handleRoutes = () => {
     if (game.running) {
       return room.isPlayer ? (
@@ -18,8 +20,14 @@ const Room = ({ room, user, game }) => {
       return <button onClick={() => startGame(room.id)}>Start Game</button>;
     }
   };
+  const handleLeave = () => {
+    leaveRoom(user.id, room.id, client);
+  };
   return (
     <div className="roomContainer">
+      <button onClick={handleLeave} id="leaveButton">
+        leave
+      </button>
       <div className="roomId">room : {room.id}</div>
       <Chat user={user} room={room} />
       {handleRoutes()}
@@ -28,4 +36,4 @@ const Room = ({ room, user, game }) => {
   );
 };
 
-export default Room;
+export default connect(null, { leaveRoom })(Room);

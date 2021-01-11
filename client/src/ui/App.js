@@ -65,7 +65,12 @@ function App({
   const handleRoutes = () => {
     if (user.logged && room.joined) {
       return (
-        <Room room={room} user={user} game={room.isPlayer ? game : spectator} />
+        <Room
+          room={room}
+          client={client}
+          user={user}
+          game={room.isPlayer ? game : spectator}
+        />
       );
     } else if (user.logged) {
       return <JoinRoom client={client} />;

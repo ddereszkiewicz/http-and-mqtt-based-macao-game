@@ -23,6 +23,10 @@ class Game {
     this.stack.assignDeck(this.deck);
     this.room = room;
   }
+  removeSpect(spect) {
+    this.spectators = this.spectators.filter(s => s.id != spect.id);
+    this.sendState();
+  }
   checkForWin() {
     if (this.turn.hand.length === 0) {
       this.running = false;
@@ -46,9 +50,20 @@ class Game {
         : (this.turn = this.turn.right);
     }
   }
-  vote(vote) {
+  removePlayer(player) {
+    if (this.turn.id === player.id) {
+      this.nextTurn("left");
+    }
+    const left = player.left;
+    const right = player.right;
+    left.right = right;
+    right.left = left;
+    this.players = this.players.filter(p => p.id !== player.id);
+    this.sendState();
+  }
+  vote(vote, id) {
     if (this.voting) {
-      this.voting.vote(vote);
+      this.voting.vote(vote, id);
       if (this.voting.hasEverybodyVoted()) {
         const res = this.voting.checkIfValid();
         if (res) {
@@ -56,8 +71,8 @@ class Game {
           this.undo();
         }
         this.voting = null;
-        this.sendState();
       }
+      this.sendState();
     } else {
       throw new Error("no voting at the moment");
     }
@@ -147,7 +162,11 @@ class Game {
         })),
         winner: this.winner,
         voting: this.voting
-          ? { name: this.lastTurn.name, id: this.lastTurn.id }
+          ? {
+              name: this.lastTurn.name,
+              id: this.lastTurn.id,
+              playersWhoVoted: this.voting.playersWhoVoted,
+            }
           : "",
         cardOnTop: {
           color: this.stack.cardOnTop.color,

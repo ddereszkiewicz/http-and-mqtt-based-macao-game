@@ -4,6 +4,7 @@ import {
   ADD_PLAYER,
   JOIN_ROOM_AS_SPECT,
   ADD_SPECT,
+  LEAVE_ROOM,
 } from "./types";
 const initialState = {
   id: "",
@@ -16,6 +17,9 @@ const initialState = {
 
 const roomReducer = (state = initialState, action) => {
   switch (action.type) {
+    case LEAVE_ROOM: {
+      return initialState;
+    }
     case JOIN_ROOM: {
       return { ...state, id: action.payload.id, joined: true };
     }

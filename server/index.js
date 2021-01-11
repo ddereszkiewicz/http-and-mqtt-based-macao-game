@@ -9,6 +9,7 @@ const main = new Main();
 const app = express();
 const port = 5000;
 const mqttHandler = new MqttHandler();
+mqttHandler.connect();
 app.use(express.json());
 app.use(cors());
 
@@ -79,6 +80,7 @@ app.post("/:idPlayer/put-card", (req, res) => {
     res.send({ status: false, message: error.message });
   }
 });
+
 app.post("/:idRoom/start-game", (req, res) => {
   try {
     const room = main.findRoomById(req.params.idRoom);
@@ -131,6 +133,19 @@ app.post("/join-room", (req, res) => {
     const player = main.findPlayerById(playerId);
     const room = main.findRoomById(roomId);
     room.addPlayer(player);
+    res.send({ status: true });
+  } catch (error) {
+    console.log(error);
+    res.send({ status: false, message: error.message });
+  }
+});
+app.post("/leave-room", (req, res) => {
+  const playerId = req.body.userId;
+  const roomId = req.body.roomId;
+  try {
+    const player = main.findPlayerById(playerId);
+    const room = main.findRoomById(roomId);
+    room.removePlayer(player);
     res.send({ status: true });
   } catch (error) {
     console.log(error);

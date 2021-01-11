@@ -2,9 +2,11 @@ class Voting {
   constructor(votesRequired) {
     this.votesRequired = votesRequired;
     this.votes = [];
+    this.playersWhoVoted = [];
   }
-  vote(vote) {
+  vote(vote, id) {
     this.votes.push(vote);
+    this.playersWhoVoted.push(id);
   }
   hasEverybodyVoted() {
     return this.votes.length === this.votesRequired;

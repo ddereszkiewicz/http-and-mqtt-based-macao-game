@@ -5,11 +5,27 @@ class Room {
     this.id = id;
     this.players = players;
     this.mqttHandler = mqttHandler;
-    this.mqttHandler.connect();
     this.chat = new Chat(this.mqttHandler, id);
     this.game;
     this.publishState();
     this.spectators = [];
+  }
+  removePlayer(player) {
+    if (this.players.find(p => p.id == player.id)) {
+      this.players = this.players.filter(p => p.id != player.id);
+      if (this.game) {
+        this.game.removePlayer(player);
+      }
+    } else if (this.spectators.find(p => p.id == player.id)) {
+      this.spectators = this.spectators.filter(p => p.id != player.id);
+      if (this.game) {
+        this.game.removeSpect(player);
+      }
+    } else {
+      throw new Error("Player not in the game");
+    }
+
+    this.publishState();
   }
   addSpect(viewer) {
     if (this.game) {
