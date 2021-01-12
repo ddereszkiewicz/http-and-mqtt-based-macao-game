@@ -8,5 +8,12 @@ class Chat {
     this.messages += message;
     this.mqttHandler.publish(`chat/${this.id}`, JSON.stringify(message));
   }
+  publishPrivateMessage(message, destinationId) {
+    this.messages += message;
+    this.mqttHandler.publish(
+      `chat/${this.id}/${destinationId}`,
+      JSON.stringify(message)
+    );
+  }
 }
 module.exports = Chat;

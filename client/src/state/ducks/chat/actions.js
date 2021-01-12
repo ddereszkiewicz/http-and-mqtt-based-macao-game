@@ -15,3 +15,32 @@ export const sendMessage = async (author, text, roomId) => {
     console.log(error.message);
   }
 };
+
+export const sendPrivateMessage = (
+  author,
+  text,
+  roomId,
+  destinationId,
+  destinationName
+) => async dispatch => {
+  try {
+    const result = await axios.post(
+      `http://localhost:5000/${roomId}/chat-private`,
+      {
+        author: author,
+        text: text,
+        destinationId: destinationId,
+      }
+    );
+    result.data.status &&
+      dispatch(
+        addMessage({
+          author: author + `(whisper to ${destinationName})`,
+          text: text,
+        })
+      );
+  } catch (error) {
+    alert(error.message);
+    console.log(error.message);
+  }
+};

@@ -44,6 +44,17 @@ function App({
             onAddSpect(JSON.parse(message.toString()).spectators);
             break;
           }
+          case `chat/${room.id}/${user.id}`: {
+            const messageParsed = JSON.parse(message.toString());
+            const messagePrepared = {
+              ...messageParsed,
+              author: messageParsed.author + "(whisper)",
+            };
+
+            onAddMessage(messagePrepared);
+
+            break;
+          }
           case `spectate/${room.id}`: {
             onImportSpectatorState(JSON.parse(message.toString()));
             break;
@@ -86,7 +97,6 @@ const mapDispatchToProps = dispatch => {
     onImportSpectatorState: state => dispatch(importSpectatorState(state)),
     onImportState: state => dispatch(importState(state)),
     onAddMessage: message => {
-      console.log(message);
       dispatch(addMessage(message));
     },
     onAddPlayer: playerNames => dispatch(addPlayer(playerNames)),

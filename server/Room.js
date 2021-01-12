@@ -10,6 +10,9 @@ class Room {
     this.publishState();
     this.spectators = [];
   }
+  publishPrivateMessage(message, destinationId) {
+    this.chat.publishPrivateMessage(message, destinationId);
+  }
   removePlayer(player) {
     if (this.players.find(p => p.id == player.id)) {
       this.players = this.players.filter(p => p.id != player.id);

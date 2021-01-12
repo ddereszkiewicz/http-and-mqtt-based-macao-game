@@ -113,8 +113,20 @@ app.post("/register", (req, res) => {
   res.send(player.id);
 });
 
+app.post("/:id/chat-private", (req, res) => {
+  const id = req.params.id;
+  const destinationId = req.body.destinationId;
+  const message = new Message(req.body.author, req.body.text);
+  try {
+    const room = main.findRoomById(id);
+    room.publishPrivateMessage(message, destinationId);
+    res.send({ status: true });
+  } catch (error) {
+    console.log(error);
+    res.send({ status: false, message: error.message });
+  }
+});
 app.post("/:id/chat", (req, res) => {
-  console.log("wywołano chat");
   const id = req.params.id;
   const message = new Message(req.body.author, req.body.text);
   try {

@@ -20,6 +20,7 @@ export const joinRoom = (userId, roomId, client) => async dispatch => {
     await client.subscribe(`room/${roomId}`);
     await client.subscribe(`game-state/${userId}`);
     await client.subscribe(`chat/${roomId}`);
+    await client.subscribe(`chat/${roomId}/${userId}`);
   } catch (error) {
     console.log(error);
     alert(error);
@@ -40,6 +41,7 @@ export const leaveRoom = (userId, roomId, client) => async dispatch => {
     await client.unsubscribe(`room/${roomId}`);
     await client.unsubscribe(`game-state/${userId}`);
     await client.unsubscribe(`chat/${roomId}`);
+    await client.unsubscribe(`chat/${roomId}/${userId}`);
   } catch (error) {
     console.log(error);
     alert(error);
@@ -63,6 +65,7 @@ export const joinRoomAsSpect = (userId, roomId, client) => async dispatch => {
     await client.subscribe(`room/${roomId}`);
     await client.subscribe(`spectate/${roomId}`);
     await client.subscribe(`chat/${roomId}`);
+    await client.subscribe(`chat/${roomId}/${userId}`);
   } catch (error) {
     console.log(error);
     alert(error);
@@ -82,6 +85,7 @@ export const createRoom = (userId, client) => async dispatch => {
     await client.subscribe(`room/${parseInt(response.data.roomId)}`);
     await client.subscribe(`game-state/${userId}`);
     await client.subscribe(`chat/${parseInt(response.data.roomId)}`);
+    await client.subscribe(`chat/${parseInt(response.data.roomId)}/${userId}`);
   } catch (error) {
     console.log(error);
     alert(error);
