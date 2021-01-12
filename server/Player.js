@@ -50,6 +50,8 @@ class Player {
         payload !== "ace" &&
         payload !== "jack"
       ) {
+        card.demandedValue = payload;
+        card.starter = this.id;
         card.action.power = payload;
         card.action.starter = this.id;
       } else {
