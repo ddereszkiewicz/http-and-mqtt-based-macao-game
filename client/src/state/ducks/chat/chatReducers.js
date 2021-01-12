@@ -9,6 +9,7 @@ const chatReducer = (state = initialState, action) => {
     case ADD_MESSAGE: {
       return { ...state, messages: [...state.messages, action.payload] };
     }
+
     default:
       return state;
   }

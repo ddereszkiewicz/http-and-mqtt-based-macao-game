@@ -1,4 +1,4 @@
-import { IMPORT_STATE, LEAVE_GAME, SELECT_CARD } from "./types";
+import { IMPORT_STATE, LEAVE_GAME, SELECT_CARD, UNSELECT_CARD } from "./types";
 
 const initialState = {
   hand: [],
@@ -22,6 +22,9 @@ const gameReducer = (state = initialState, action) => {
     }
     case SELECT_CARD: {
       return { ...state, selected: action.payload };
+    }
+    case UNSELECT_CARD: {
+      return { ...state, selected: null };
     }
     default:
       return state;

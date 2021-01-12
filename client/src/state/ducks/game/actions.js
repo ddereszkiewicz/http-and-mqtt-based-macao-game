@@ -1,4 +1,4 @@
-import { IMPORT_STATE, SELECT_CARD } from "./types";
+import { IMPORT_STATE, SELECT_CARD, UNSELECT_CARD } from "./types";
 const axios = require("axios");
 export const importState = state => {
   console.log(state.winner);
@@ -26,7 +26,8 @@ export const selectCard = payload => ({
   payload: payload,
 });
 
-export const putCard = async (idUser, card, payload) => {
+export const putCard = (idUser, card, payload) => async dispatch => {
+  console.log("work");
   try {
     const result = await axios.post(
       `http://localhost:5000/${idUser}/put-card`,
@@ -36,8 +37,11 @@ export const putCard = async (idUser, card, payload) => {
         payload: payload,
       }
     );
-    console.log(result.data);
-    !result.data.status && alert(result.data.message);
+
+    if (!result.data.status) {
+      alert(result.data.message);
+      dispatch({ type: UNSELECT_CARD });
+    }
   } catch (error) {
     console.log(error.message);
     alert(error.message);

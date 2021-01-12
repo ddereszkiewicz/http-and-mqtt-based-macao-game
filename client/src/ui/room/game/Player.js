@@ -5,8 +5,9 @@ import Card from "./Card";
 import DifferentColorDisplay from "./DifferentColorDisplay";
 import ValueSelection from "./ValueSelection";
 import EffectDisplay from "./EffectDisplay";
+
 const axios = require("axios");
-const Player = ({ user, game, onSelectCard }) => {
+const Player = ({ user, game, onSelectCard, putCard }) => {
   const selectCard = card => {
     if (
       game.currentValue === card.value ||
@@ -70,6 +71,7 @@ const Player = ({ user, game, onSelectCard }) => {
 const mapDispatchToProps = dispatch => {
   return {
     onSelectCard: card => dispatch(selectCard(card)),
+    putCard: (id, card, payload) => dispatch(putCard(id, card, payload)),
   };
 };
 
